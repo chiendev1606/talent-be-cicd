@@ -17,6 +17,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@nnpp/sso-client": [
+        "libs/sso-client/src"
+      ],
+      "@nnpp/sso-client/*": [
+        "libs/sso-client/src/*"
+      ]
+    }
   }
 }

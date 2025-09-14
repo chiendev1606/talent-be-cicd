@@ -16,11 +16,13 @@ datasource db {
 
 // candidate + recruiter
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int    @id @default(autoincrement())
+  email     String @unique
   password  String
-  firstName String   @map("first_name")
-  lastName  String   @map("last_name")
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+  role      String @default("candidate")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

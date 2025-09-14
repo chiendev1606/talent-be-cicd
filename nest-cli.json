@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/talent-service/tsconfig.app.json"
       }
+    },
+    "@nnpp/sso-client": {
+      "type": "library",
+      "root": "libs/sso-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/sso-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/sso-client/tsconfig.lib.json"
+      }
     }
   }
 }

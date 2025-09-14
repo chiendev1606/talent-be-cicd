@@ -1,22 +1,35 @@
-import { Controller, Get } from '@nestjs/common';
-import { SsoClientService } from '../../external/sso-client/sso-client.service';
-import { TalentClientService } from '../../external/talent-client/talent-client.service';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+} from '@nestjs/common';
+import { SsoClientService } from '@nnpp/sso-client';
+import { CreateUserRequest } from '@nnpp/sso-client/client/generated';
 
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly ssoClientService: SsoClientService,
-    private readonly talentClientService: TalentClientService,
-  ) {}
+  constructor(private readonly ssoClientService: SsoClientService) {}
 
-  @Get('me')
-  async getMe() {
-    const me = await this.ssoClientService.getMe();
-    const profiles = await this.talentClientService.getProfiles();
-
-    return {
-      ...me,
-      profiles,
-    };
+  @Post()
+  async register(@Body() body: CreateUserRequest) {
+    try {
+      const res = await this.ssoClientService.createUser(body);
+      return res;
+    } catch (error) {
+      throw error;
+    }
   }
+
+  // @Get('me')
+  // async getMe() {
+  //   const me = await this.ssoClientService.getMe();
+  //   const profiles = await this.talentClientService.getProfiles();
+
+  //   return {
+  //     ...me,
+  //     profiles,
+  //   };
+  // }
 }
