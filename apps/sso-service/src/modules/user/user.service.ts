@@ -6,8 +6,12 @@ import {
 } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+
+export type TokenPayload = {
+  sub: string;
+  email: string;
+};
 
 @Injectable()
 export class UserService {
@@ -41,7 +45,7 @@ export class UserService {
     return user;
   }
 
-  async login(data: LoginDto) {
+  async login(data: { email: string; password: string }) {
     const { email, password } = data;
 
     let error: string | null = null;
@@ -67,5 +71,17 @@ export class UserService {
     return {
       token,
     };
+  }
+
+  async verifyToken(data: { token: string }) {
+    const { token } = data;
+
+    try {
+      const decoded: TokenPayload = await this.jwtService.verifyAsync(token);
+      return decoded;
+    } catch (error) {
+      this.logger.error(error);
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

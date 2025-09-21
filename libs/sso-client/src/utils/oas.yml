@@ -77,6 +77,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/auth/verify-token:
+    post:
+      tags:
+        - Auth
+      operationId: verifyToken
+      summary: Verify JWT token
+      description: Verify the validity of a JWT token and return its payload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyTokenRequest'
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPayload'
+        '401':
+          description: Unauthorized - Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Bad request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     CreateUserRequest:
@@ -131,6 +170,37 @@ components:
           type: string
           description: JWT authentication token
           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+
+    VerifyTokenRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: JWT token to verify
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+
+    TokenPayload:
+      type: object
+      properties:
+        sub:
+          type: string
+          description: Subject (user ID)
+          example: '4'
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: 'example@gmail.com'
+        iat:
+          type: integer
+          description: Issued at timestamp
+          example: 1694684095
+        exp:
+          type: integer
+          description: Expiration timestamp
+          example: 1694687695
 
     User:
       type: object
