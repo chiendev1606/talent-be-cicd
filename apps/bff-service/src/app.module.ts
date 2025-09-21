@@ -4,9 +4,17 @@ import { SsoClientModule } from '@nnpp/sso-client';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/guard/auth.guard';
+import { TalentClientModule } from '@nnpp/talent-client';
+import { JobModule } from './modules/job/job.module';
 
 @Module({
-  imports: [SsoClientModule, AuthModule, UserModule],
+  imports: [
+    SsoClientModule,
+    TalentClientModule,
+    AuthModule,
+    UserModule,
+    JobModule,
+  ],
   providers: [
     {
       provide: APP_GUARD,

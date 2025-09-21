@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: Talent Service API
+  version: 1.0.0
+  description: API for retrieving job information from Talent Service
+
+paths:
+  /api/jobs:
+    get:
+      tags:
+        - Jobs
+      operationId: getJobs
+      summary: Get all jobs
+      description: Retrieve a list of all available jobs
+      responses:
+        '200':
+          description: List of jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the job
+          example: 1
+        title:
+          type: string
+          description: Job title
+          example: 'Software Engineer'
+        description:
+          type: string
+          description: Job description
+          example: 'We are looking for a software engineer with 3 years of experience in React and Node.js.'
+        company:
+          type: string
+          description: Company name
+          example: 'Google'
+        location:
+          type: string
+          description: Job location
+          example: 'San Francisco, CA'
+        salary:
+          type: integer
+          description: Job salary
+          example: 100000
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the job was created
+          example: '2025-09-14T08:34:55.639Z'
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: 'Internal server error'
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: 500

@@ -16,6 +16,19 @@
           "useSingleRequestParameter": true,
           "withNodeImports": true
         }
+      },
+      "talent-client": {
+        "generatorName": "typescript-axios",
+        "inputSpec": "libs/talent-client/src/utils/oas.yml",
+        "output": "libs/talent-client/src/client/generated",
+        "additionalProperties": {
+          "stringEnums": true,
+          "supportsES6": true,
+          "typescriptThreePlus": true,
+          "enumPropertyNaming": "original",
+          "useSingleRequestParameter": true,
+          "withNodeImports": true
+        }
       }
     }
   }

@@ -23,6 +23,12 @@
       ],
       "@nnpp/sso-client/*": [
         "libs/sso-client/src/*"
+      ],
+      "@nnpp/talent-client": [
+        "libs/talent-client/src"
+      ],
+      "@nnpp/talent-client/*": [
+        "libs/talent-client/src/*"
       ]
     }
   }

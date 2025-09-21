@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/sso-client/tsconfig.lib.json"
       }
+    },
+    "talent-client": {
+      "type": "library",
+      "root": "libs/talent-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/talent-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/talent-client/tsconfig.lib.json"
+      }
     }
   }
 }
