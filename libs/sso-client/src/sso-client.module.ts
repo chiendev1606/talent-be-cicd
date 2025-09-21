@@ -1,9 +1,11 @@
 import { SsoClientService } from './sso-client.service';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { injectApiProvider } from './utils/providers';
-import { UserApi } from './client/generated';
+import { AuthApi, UserApi } from './client/generated';
 
+// TODO: make it as a dynamic module
+@Global()
 @Module({
   imports: [
     HttpModule.register({
@@ -12,7 +14,11 @@ import { UserApi } from './client/generated';
       },
     }),
   ],
-  providers: [SsoClientService, injectApiProvider(UserApi)],
+  providers: [
+    SsoClientService,
+    injectApiProvider(UserApi),
+    injectApiProvider(AuthApi),
+  ],
   exports: [SsoClientService],
 })
 export class SsoClientModule {}

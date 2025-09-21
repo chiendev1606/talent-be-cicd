@@ -1,13 +1,21 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { CreateUserRequest, UserApi } from './client/generated';
+import {
+  AuthApi,
+  CreateUserRequest,
+  LoginRequest,
+  UserApi,
+} from './client/generated';
 
 @Injectable()
 export class SsoClientService {
-  constructor(private readonly userApi: UserApi) {}
+  constructor(
+    private readonly userApi: UserApi,
+    private readonly authApi: AuthApi,
+  ) {}
 
   async createUser(data: CreateUserRequest) {
     try {
@@ -16,12 +24,32 @@ export class SsoClientService {
       });
 
       return res.data;
-    } catch (error) {
+    } catch (error: any) {
       if (error.response.status === 400) {
         throw new BadRequestException(error.response.data);
       }
 
-      throw new InternalServerErrorException(error.response.data);
+      throw error;
+    }
+  }
+
+  async login(data: LoginRequest) {
+    try {
+      const res = await this.authApi.login({
+        loginRequest: data,
+      });
+
+      return res.data;
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        throw new BadRequestException(error.response.data);
+      }
+
+      if (error.response.status === 401) {
+        throw new UnauthorizedException(error.response.data);
+      }
+
+      throw error;
     }
   }
 }

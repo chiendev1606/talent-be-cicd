@@ -1,10 +1,22 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  private readonly logger = new Logger(UserService.name);
+
+  constructor(
+    private readonly databaseService: DatabaseService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async register(body: CreateUserDto) {
     const { email } = body;
@@ -27,5 +39,33 @@ export class UserService {
       where: { id },
     });
     return user;
+  }
+
+  async login(data: LoginDto) {
+    const { email, password } = data;
+
+    let error: string | null = null;
+
+    const user = await this.databaseService.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user || user.password !== password) {
+      error = 'Invalid email or password';
+      this.logger.error(error);
+      throw new UnauthorizedException(error);
+    }
+
+    // jwt
+    const payload = {
+      sub: user.id,
+      email: user.email,
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      token,
+    };
   }
 }
