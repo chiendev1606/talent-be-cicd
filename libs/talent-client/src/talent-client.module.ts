@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { TalentClientService } from './talent-client.service';
 import { HttpModule } from '@nestjs/axios';
 import { injectApiProvider } from './utils/providers';
-import { JobsApi } from './client/generated';
+import { TalentApi } from './client/generated';
 
 @Global()
 @Module({
@@ -13,7 +13,7 @@ import { JobsApi } from './client/generated';
       },
     }),
   ],
-  providers: [TalentClientService, injectApiProvider(JobsApi)],
+  providers: [TalentClientService, injectApiProvider(TalentApi)],
   exports: [TalentClientService],
 })
 export class TalentClientModule {}

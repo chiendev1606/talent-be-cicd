@@ -1,21 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { DatabaseService } from '../../database/database.service';
+import { CreateJobDto } from './dto/create-job.dto';
 
 @Injectable()
 export class JobService {
-  constructor() {}
+  constructor(private readonly databaseService: DatabaseService) {}
 
-  getJobs() {
-    return [
-      {
-        id: 1,
-        title: 'Software Engineer',
-        description:
-          'We are looking for a software engineer with 3 years of experience in React and Node.js.',
-        company: 'Google',
-        location: 'San Francisco, CA',
-        salary: 100000,
-        createdAt: new Date(),
-      },
-    ];
+  getJobs() {}
+
+  async createJob(body: CreateJobDto) {
+    const job = await this.databaseService.prisma.job.create({
+      data: body,
+    });
+    return job;
   }
 }
+
+// application: jobId, candidateId, status

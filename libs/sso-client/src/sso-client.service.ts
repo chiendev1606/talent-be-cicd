@@ -73,4 +73,13 @@ export class SsoClientService {
       throw error;
     }
   }
+
+  async findUserById(userId: number) {
+    try {
+      const res = await this.userApi.getUserById({ id: userId });
+      return res.data;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "talent"."job" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "skills" SET DEFAULT ARRAY[]::TEXT[],
+ALTER COLUMN "company" DROP NOT NULL,
+ALTER COLUMN "location" DROP NOT NULL,
+ALTER COLUMN "benefits" DROP NOT NULL;
