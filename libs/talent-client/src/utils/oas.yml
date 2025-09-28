@@ -59,6 +59,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /api/profiles:
+    get:
+      tags:
+        - Talent
+      operationId: getProfiles
+      summary: Get profiles by candidate ID
+      description: Retrieve profiles for a specific candidate
+      parameters:
+        - name: candidateId
+          in: query
+          required: true
+          description: Candidate ID to filter profiles
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Profiles retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad request - invalid candidate ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Talent
+      operationId: createProfile
+      summary: Create a new profile
+      description: Create a new candidate profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProfileRequest'
+      responses:
+        '201':
+          description: Profile created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad request - invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Job:
@@ -168,6 +236,124 @@ components:
             type: string
           description: Required skills for the job
           example: ['React', 'Node.js', 'TypeScript']
+
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the profile
+          example: 1
+        candidateId:
+          type: integer
+          description: ID of the candidate who owns this profile
+          example: 123
+        skills:
+          type: array
+          items:
+            type: string
+          description: Candidate's skills
+          example: ['React', 'Node.js', 'TypeScript']
+        summary:
+          type: string
+          description: Candidate's professional summary
+          example: 'Experienced software engineer with 5 years of experience in full-stack development'
+        experience:
+          type: array
+          items:
+            type: string
+          description: Candidate's work experience
+          example:
+            [
+              'Software Engineer at Google (2020-2023)',
+              'Junior Developer at Startup (2019-2020)',
+            ]
+        education:
+          type: array
+          items:
+            type: string
+          description: Candidate's education background
+          example: ['Bachelor of Computer Science - MIT (2015-2019)']
+        projects:
+          type: array
+          items:
+            type: string
+          description: Candidate's projects
+          example:
+            [
+              'E-commerce platform built with React and Node.js',
+              'Mobile app for task management',
+            ]
+        socialLinks:
+          type: array
+          items:
+            type: string
+          description: Candidate's social media and professional links
+          example:
+            ['https://github.com/username', 'https://linkedin.com/in/username']
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the profile was created
+          example: '2025-09-14T08:34:55.639Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the profile was last updated
+          example: '2025-09-14T08:34:55.639Z'
+
+    CreateProfileRequest:
+      type: object
+      required:
+        - candidateId
+      properties:
+        candidateId:
+          type: integer
+          description: ID of the candidate creating the profile
+          example: 123
+        skills:
+          type: array
+          items:
+            type: string
+          description: Candidate's skills
+          example: ['React', 'Node.js', 'TypeScript']
+        summary:
+          type: string
+          description: Candidate's professional summary
+          example: 'Experienced software engineer with 5 years of experience in full-stack development'
+        experience:
+          type: array
+          items:
+            type: string
+          description: Candidate's work experience
+          example:
+            [
+              'Software Engineer at Google (2020-2023)',
+              'Junior Developer at Startup (2019-2020)',
+            ]
+        education:
+          type: array
+          items:
+            type: string
+          description: Candidate's education background
+          example: ['Bachelor of Computer Science - MIT (2015-2019)']
+        projects:
+          type: array
+          items:
+            type: string
+          description: Candidate's projects
+          example:
+            [
+              'E-commerce platform built with React and Node.js',
+              'Mobile app for task management',
+            ]
+        socialLinks:
+          type: array
+          items:
+            type: string
+          description: Candidate's social media and professional links
+          example:
+            ['https://github.com/username', 'https://linkedin.com/in/username']
 
     Error:
       type: object

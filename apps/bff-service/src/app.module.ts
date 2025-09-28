@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/guard/auth.guard';
 import { TalentClientModule } from '@nnpp/talent-client';
 import { JobModule } from './modules/job/job.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JobModule } from './modules/job/job.module';
     AuthModule,
     UserModule,
     JobModule,
+    ProfileModule,
   ],
   providers: [
     {

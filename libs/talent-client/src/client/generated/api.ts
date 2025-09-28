@@ -90,6 +90,55 @@ export interface CreateJobRequest {
 /**
  * 
  * @export
+ * @interface CreateProfileRequest
+ */
+export interface CreateProfileRequest {
+    /**
+     * ID of the candidate creating the profile
+     * @type {number}
+     * @memberof CreateProfileRequest
+     */
+    'candidateId': number;
+    /**
+     * Candidate\'s skills
+     * @type {Array<string>}
+     * @memberof CreateProfileRequest
+     */
+    'skills'?: Array<string>;
+    /**
+     * Candidate\'s professional summary
+     * @type {string}
+     * @memberof CreateProfileRequest
+     */
+    'summary'?: string;
+    /**
+     * Candidate\'s work experience
+     * @type {Array<string>}
+     * @memberof CreateProfileRequest
+     */
+    'experience'?: Array<string>;
+    /**
+     * Candidate\'s education background
+     * @type {Array<string>}
+     * @memberof CreateProfileRequest
+     */
+    'education'?: Array<string>;
+    /**
+     * Candidate\'s projects
+     * @type {Array<string>}
+     * @memberof CreateProfileRequest
+     */
+    'projects'?: Array<string>;
+    /**
+     * Candidate\'s social media and professional links
+     * @type {Array<string>}
+     * @memberof CreateProfileRequest
+     */
+    'socialLinks'?: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface Job
  */
 export interface Job {
@@ -202,6 +251,73 @@ export interface ModelError {
      */
     'statusCode'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface Profile
+ */
+export interface Profile {
+    /**
+     * Unique identifier for the profile
+     * @type {number}
+     * @memberof Profile
+     */
+    'id'?: number;
+    /**
+     * ID of the candidate who owns this profile
+     * @type {number}
+     * @memberof Profile
+     */
+    'candidateId'?: number;
+    /**
+     * Candidate\'s skills
+     * @type {Array<string>}
+     * @memberof Profile
+     */
+    'skills'?: Array<string>;
+    /**
+     * Candidate\'s professional summary
+     * @type {string}
+     * @memberof Profile
+     */
+    'summary'?: string;
+    /**
+     * Candidate\'s work experience
+     * @type {Array<string>}
+     * @memberof Profile
+     */
+    'experience'?: Array<string>;
+    /**
+     * Candidate\'s education background
+     * @type {Array<string>}
+     * @memberof Profile
+     */
+    'education'?: Array<string>;
+    /**
+     * Candidate\'s projects
+     * @type {Array<string>}
+     * @memberof Profile
+     */
+    'projects'?: Array<string>;
+    /**
+     * Candidate\'s social media and professional links
+     * @type {Array<string>}
+     * @memberof Profile
+     */
+    'socialLinks'?: Array<string>;
+    /**
+     * Timestamp when the profile was created
+     * @type {string}
+     * @memberof Profile
+     */
+    'createdAt'?: string;
+    /**
+     * Timestamp when the profile was last updated
+     * @type {string}
+     * @memberof Profile
+     */
+    'updatedAt'?: string;
+}
 
 /**
  * TalentApi - axios parameter creator
@@ -246,6 +362,42 @@ export const TalentApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * Create a new candidate profile
+         * @summary Create a new profile
+         * @param {CreateProfileRequest} createProfileRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProfile: async (createProfileRequest: CreateProfileRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createProfileRequest' is not null or undefined
+            assertParamExists('createProfile', 'createProfileRequest', createProfileRequest)
+            const localVarPath = `/api/profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createProfileRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve a list of all available jobs
          * @summary Get all jobs
          * @param {*} [options] Override http request option.
@@ -263,6 +415,43 @@ export const TalentApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve profiles for a specific candidate
+         * @summary Get profiles by candidate ID
+         * @param {number} candidateId Candidate ID to filter profiles
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfiles: async (candidateId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'candidateId' is not null or undefined
+            assertParamExists('getProfiles', 'candidateId', candidateId)
+            const localVarPath = `/api/profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (candidateId !== undefined) {
+                localVarQueryParameter['candidateId'] = candidateId;
+            }
 
 
     
@@ -299,6 +488,19 @@ export const TalentApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Create a new candidate profile
+         * @summary Create a new profile
+         * @param {CreateProfileRequest} createProfileRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createProfile(createProfileRequest: CreateProfileRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Profile>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProfile(createProfileRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TalentApi.createProfile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve a list of all available jobs
          * @summary Get all jobs
          * @param {*} [options] Override http request option.
@@ -308,6 +510,19 @@ export const TalentApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getJobs(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TalentApi.getJobs']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve profiles for a specific candidate
+         * @summary Get profiles by candidate ID
+         * @param {number} candidateId Candidate ID to filter profiles
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProfiles(candidateId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Profile>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProfiles(candidateId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TalentApi.getProfiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -331,6 +546,16 @@ export const TalentApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.createJob(requestParameters.createJobRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Create a new candidate profile
+         * @summary Create a new profile
+         * @param {TalentApiCreateProfileRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProfile(requestParameters: TalentApiCreateProfileRequest, options?: RawAxiosRequestConfig): AxiosPromise<Profile> {
+            return localVarFp.createProfile(requestParameters.createProfileRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Retrieve a list of all available jobs
          * @summary Get all jobs
          * @param {*} [options] Override http request option.
@@ -338,6 +563,16 @@ export const TalentApiFactory = function (configuration?: Configuration, basePat
          */
         getJobs(options?: RawAxiosRequestConfig): AxiosPromise<Array<Job>> {
             return localVarFp.getJobs(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve profiles for a specific candidate
+         * @summary Get profiles by candidate ID
+         * @param {TalentApiGetProfilesRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfiles(requestParameters: TalentApiGetProfilesRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<Profile>> {
+            return localVarFp.getProfiles(requestParameters.candidateId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -354,6 +589,34 @@ export interface TalentApiCreateJobRequest {
      * @memberof TalentApiCreateJob
      */
     readonly createJobRequest: CreateJobRequest
+}
+
+/**
+ * Request parameters for createProfile operation in TalentApi.
+ * @export
+ * @interface TalentApiCreateProfileRequest
+ */
+export interface TalentApiCreateProfileRequest {
+    /**
+     * 
+     * @type {CreateProfileRequest}
+     * @memberof TalentApiCreateProfile
+     */
+    readonly createProfileRequest: CreateProfileRequest
+}
+
+/**
+ * Request parameters for getProfiles operation in TalentApi.
+ * @export
+ * @interface TalentApiGetProfilesRequest
+ */
+export interface TalentApiGetProfilesRequest {
+    /**
+     * Candidate ID to filter profiles
+     * @type {number}
+     * @memberof TalentApiGetProfiles
+     */
+    readonly candidateId: number
 }
 
 /**
@@ -376,6 +639,18 @@ export class TalentApi extends BaseAPI {
     }
 
     /**
+     * Create a new candidate profile
+     * @summary Create a new profile
+     * @param {TalentApiCreateProfileRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TalentApi
+     */
+    public createProfile(requestParameters: TalentApiCreateProfileRequest, options?: RawAxiosRequestConfig) {
+        return TalentApiFp(this.configuration).createProfile(requestParameters.createProfileRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Retrieve a list of all available jobs
      * @summary Get all jobs
      * @param {*} [options] Override http request option.
@@ -384,6 +659,18 @@ export class TalentApi extends BaseAPI {
      */
     public getJobs(options?: RawAxiosRequestConfig) {
         return TalentApiFp(this.configuration).getJobs(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve profiles for a specific candidate
+     * @summary Get profiles by candidate ID
+     * @param {TalentApiGetProfilesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TalentApi
+     */
+    public getProfiles(requestParameters: TalentApiGetProfilesRequest, options?: RawAxiosRequestConfig) {
+        return TalentApiFp(this.configuration).getProfiles(requestParameters.candidateId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

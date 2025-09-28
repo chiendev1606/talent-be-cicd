@@ -1,5 +1,9 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { CreateJobRequest, TalentApi } from './client/generated';
+import {
+  CreateJobRequest,
+  CreateProfileRequest,
+  TalentApi,
+} from './client/generated';
 
 @Injectable()
 export class TalentClientService {
@@ -20,6 +24,38 @@ export class TalentClientService {
   async createJob(body: CreateJobRequest) {
     try {
       const res = await this.talentApi.createJob({ createJobRequest: body });
+      return res.data;
+    } catch (error) {
+      if (error.response.status === 400) {
+        throw new BadRequestException(error.response.data);
+      }
+
+      throw error;
+    }
+  }
+
+  async getProfiles(candidateId: number) {
+    console.log(
+      '🚀 ~ TalentClientService ~ getProfiles ~ candidateId:',
+      candidateId,
+    );
+    try {
+      const res = await this.talentApi.getProfiles({ candidateId });
+      return res.data;
+    } catch (error) {
+      if (error.response.status === 400) {
+        throw new BadRequestException(error.response.data);
+      }
+
+      throw error;
+    }
+  }
+
+  async createProfile(body: CreateProfileRequest) {
+    try {
+      const res = await this.talentApi.createProfile({
+        createProfileRequest: body,
+      });
       return res.data;
     } catch (error) {
       if (error.response.status === 400) {

@@ -10,6 +10,15 @@ enum JobStatus {
   CLOSED
 }
 
+// pending => profile_passed => interviewed => passed/failed
+enum ApplicationStatus {
+  PENDING
+  PROFILE_PASSED
+  INTERVIEWED
+  PASSED
+  FAILED
+}
+
 generator client {
   provider = "prisma-client-js"
   output   = "../../../node_modules/@prisma/talent-client"
@@ -36,4 +45,30 @@ model Job {
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("job")
+}
+
+model Profile {
+  id          Int      @id @default(autoincrement())
+  candidateId Int      @map("candidate_id")
+  skills      String[] @default([])
+  summary     String?
+  experience  String[] @default([])
+  education   String[] @default([])
+  projects    String[] @default([])
+  socialLinks String[] @default([])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("profile")
+}
+
+model Application {
+  id          Int               @id @default(autoincrement())
+  jobId       Int               @map("job_id")
+  candidateId Int               @map("candidate_id")
+  status      ApplicationStatus @default(PENDING)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  @@map("application")
 }
