@@ -6,7 +6,9 @@ import { CreateJobDto } from './dto/create-job.dto';
 export class JobService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  getJobs() {}
+  getJobs() {
+    return this.databaseService.prisma.job.findMany();
+  }
 
   async createJob(body: CreateJobDto) {
     const job = await this.databaseService.prisma.job.create({

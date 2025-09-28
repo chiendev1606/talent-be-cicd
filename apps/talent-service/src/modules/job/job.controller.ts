@@ -6,6 +6,7 @@ import { CreateJobDto } from './dto/create-job.dto';
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 
+  // filter, sort, pagination
   @Get()
   getJobs() {
     return this.jobService.getJobs();
