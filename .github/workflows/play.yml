@@ -1,0 +1,29 @@
+name: play with github actions
+
+on:
+  push:
+    branches:
+      - play-with-github-actions
+
+jobs:
+  job-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Play
+        run: echo "Hello, Step 1"
+      - name: Play
+        run: echo "Hello, Step 2"
+
+  job-2:
+    needs: job-1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Play
+        run: echo "Hello, Step 3"
+
+  job-3:
+    needs: job-2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Play
+        run: echo "Hello, Step 4"
