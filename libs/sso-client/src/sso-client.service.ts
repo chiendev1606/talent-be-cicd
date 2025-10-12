@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import {
@@ -13,6 +14,8 @@ import {
 
 @Injectable()
 export class SsoClientService {
+  private readonly logger = new Logger(SsoClientService.name);
+
   constructor(
     private readonly userApi: UserApi,
     private readonly authApi: AuthApi,
@@ -42,6 +45,7 @@ export class SsoClientService {
 
       return res.data;
     } catch (error: any) {
+      this.logger.error(error);
       if (error.response.status === 400) {
         throw new BadRequestException(error.response.data);
       }
@@ -62,6 +66,7 @@ export class SsoClientService {
 
       return res.data;
     } catch (error: any) {
+      this.logger.error(error);
       if (error.response.status === 400) {
         throw new BadRequestException(error.response.data);
       }
@@ -79,6 +84,7 @@ export class SsoClientService {
       const res = await this.userApi.getUserById({ id: userId });
       return res.data;
     } catch (error: any) {
+      this.logger.error(error);
       throw error;
     }
   }

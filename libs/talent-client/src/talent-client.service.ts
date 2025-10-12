@@ -35,10 +35,6 @@ export class TalentClientService {
   }
 
   async getProfiles(candidateId: number) {
-    console.log(
-      '🚀 ~ TalentClientService ~ getProfiles ~ candidateId:',
-      candidateId,
-    );
     try {
       const res = await this.talentApi.getProfiles({ candidateId });
       return res.data;

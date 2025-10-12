@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateProfileDto {
   @IsNotEmpty()

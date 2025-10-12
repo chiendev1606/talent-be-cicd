@@ -2,6 +2,7 @@ import { Body, Controller, Get, Logger, Post, Req } from '@nestjs/common';
 import { SsoClientService } from '@nnpp/sso-client';
 import { CreateUserRequest } from '@nnpp/sso-client/client/generated';
 import { Public } from '../guard/public.decorator';
+import { Request } from 'express';
 
 @Controller('users')
 export class UserController {
@@ -22,8 +23,8 @@ export class UserController {
   }
 
   @Get('me')
-  async getMe(@Req() req: Request) {
+  getMe(@Req() req: Request & { user: { id: string; email: string } }) {
     // TODO: call to sso client service to get user detail
-    return (req as any).user;
+    return req.user;
   }
 }
