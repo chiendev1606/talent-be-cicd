@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { SsoClientService } from '@nnpp/sso-client';
 import { IS_PUBLIC_KEY } from './public.decorator';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request: Request = context.switchToHttp().getRequest();
     const token = request.headers?.authorization?.split(' ')[1];
 
     if (!token) {
@@ -32,10 +33,15 @@ export class AuthGuard implements CanActivate {
       token,
     });
 
-    request.user = {
-      id: decoded.sub,
-      email: decoded.email,
+    (request as Request & { user: { id: string; email: string } }).user = {
+      id: decoded.sub as string,
+      email: decoded.email as string,
     };
+
+    // _.set(request, 'user', {
+    //   id: decoded.sub,
+    //   email: decoded.email,
+    // });
 
     return true;
   }
